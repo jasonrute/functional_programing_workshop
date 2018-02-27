@@ -7,15 +7,15 @@ In the 1920s and 1930s there were two  theories of computation.
 
   - **Turing machine** (Alan Turing, 1932) 
     - **step-by-step model** of computation based on a physical (albeit theoretical) machine.  
-    - Gave rise to **imperative programming languages**:
+    - gave rise to **imperative programming languages**:
         - Fortran
         - C/C++
         - Java
         - Python
         - ...
   - **Lambda Calculus** (Alonzo Church, 1930s) and **Combinatorial Logic** (Haskell Curry, 1927)
-    -  **function based models** based on pure abstract mathematics.  
-    - Gave rise to **functional programming languages**: 
+    - **function based models** based on pure abstract mathematics.  
+    - gave rise to **functional programming languages**: 
         - Lisp
         - Haskell
         - SML/OCaml
@@ -30,18 +30,19 @@ In the 1920s and 1930s there were two  theories of computation.
 We will focus on **the functional programming paradigm** (i.e. patterns/principles) with examples in Python 3.  (However, I am secretly teaching you how to program in a purely functional language like OCaml.)
 ### FP principles at a glance
 
- - Use functions as values (which can be passed to other functions)
- - Write pure functions (with no side effects)
- - Program declaratively, not imperatively
+ 1. Use functions as values (which can be passed to other functions)
+ 2. Write pure functions (with no side effects)
+ 3. Program declaratively, not imperatively
    - Composition not steps
    - Avoid  `for`  and  `while`  loops
    - Inline  `if then else`  (also  `cases`)
    - Use pattern matching (deconstruction)
- - Use immutable types
- - Consider type safety
- - Embrace type theory
+ 4. Use immutable types
+ 5. Consider type safety
+ 6. Embrace type theory
 
 ***Warning** Python is not a purely functional language and following this advice exactly may cause you to fail your code reviews.  Use common sense.*
+
 ### Why functional programming?
 
   - Mathematically elegant
@@ -132,7 +133,7 @@ def third_largest_item(list_of_nums):
    global_variable = 5  # <-- Side effect: changing a global variable
    print("Hello")       # <-- Side effect: input/output operations
 
-   return some_list[-3] 
+   return list_of_nums[-3] 
 
 # Pure
 def third_largest_item(list_of_nums):
@@ -233,7 +234,7 @@ w = ("This is a string"
 
 ***Python Pro Tip:** Use parentheses on both sides of an expression to break it into multiple lines.  You can line things up and insert comments as desired.*   
 
-Data science example of imperative/declarative style.  Here we are plotting the number of rows in per week.
+Data science example of imperative/declarative style.  Here we are plotting the number of rows per week.
 ```python
 # imperative
 def plot_number_of_rows_per_week(df):
@@ -273,12 +274,12 @@ def contains(tree, value):
         node = to_visit.pop() # visit node
         
         if node is None:
-          continue
+            continue
         elif node.val == value:
-          return True
+            return True
         else:
             # explore child nodes
-          to_visit.append(node.left)
+            to_visit.append(node.left)
             to_visit.append(node.right)
     
     return False
@@ -305,9 +306,9 @@ Copy list and add one to every item.
 def add_one_to_each_item(old_list):
     new_list = old_list
     for n in old_list:
-       new_list.append(n+1)
+        new_list.append(n+1)
        
-  return old_list
+    return old_list
     
 # declaritive (list comprehension)
 def add_one_to_each_item(old_list):
@@ -323,8 +324,8 @@ Divide all even numbers by 2.
 def divide_by_two_if_even(old_list):
     new_list = old_list
     for n in old_list:
-       if n % 2 == 0: # even
-           new_list.append(n // 2)
+        if n % 2 == 0: # even
+            new_list.append(n // 2)
            
   return old_list
     
@@ -344,7 +345,7 @@ def reverse_each_word(sentence):
     words = sentence.split() # split sentences
     s = ""
     for w in words:
-       s += " " + w[::-1]  # add space and reversed word  
+        s += " " + w[::-1]  # add space and reversed word  
     return s[1:] # remove leading space
     
 # declaritive (list comprehension and join)

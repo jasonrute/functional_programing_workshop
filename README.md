@@ -377,11 +377,10 @@ sum(list_of_nums)              # sum numbers
 min(list_of_nums)              # find smallest number
 max(list_of_strings, key=len)  # find longest word
 "".join(list_of_strings)       # concatenate strings
-reversed(my_list)              # reverse the list
+reversed(my_list)              # reverse the list (returns an iterator)
 all(list_of_bools)             # True if all conditions are True
 any(list_of_bools)             # True if at least one condition is True
 ```
-These are all example of `reduce` operations.
 
 ### Declaritive principle: Inline `if then else` logic (also `cases`)
 ```python
@@ -583,7 +582,7 @@ Immutable types help ensure that functions stay pure (no side effects).  This is
 ### Immutable types and dictionary keys
 Immutable types can be used as dictionary keys.  The keys of a `dict`ionary (and the items in a `set`) must be immutable.
 
-More formally, keys need to be **hashable**, but in Python the hashable object are exactly the immutable ones:
+More formally, keys need to be **hashable**, but in Python the hashable objects are exactly the immutable ones:
 - `int`, `float`, `complex`, `bool`, `string`, `bytes`, 
 - `tuple` (if the items of the tuple are hashable!)
 - `frozenset`
@@ -619,12 +618,16 @@ def fib(n):
     0, 1, 1, 2, 3, 5, 8, ...
     """
     # check cache:
-    if n in cache: return cache[n]
+    if n in cache: 
+        return cache[n]
     
     # otherwise calculate result (and cache it)
-    elif n == 0: result = cache[n] = 0
-    elif n == 1: result = cache[n] = 1
-    else: result = cache[n] = fib(n - 1) + fib(n - 2)
+    elif n == 0: 
+        result = cache[n] = 0
+    elif n == 1: 
+        result = cache[n] = 1
+    else: 
+        result = cache[n] = fib(n - 1) + fib(n - 2)
     
     return result
 ```
@@ -640,9 +643,12 @@ def fib(n):
     Computes nth Fibonacci number 
     0, 1, 1, 2, 3, 5, 8, ...
     """
-    if n == 0: return 0
-    elif n == 1: return = 1
-    else: return fib(n - 1) + fib(n - 2)
+    if n == 0: 
+        return 0
+    elif n == 1: 
+        return 1
+    else: 
+        return fib(n - 1) + fib(n - 2)
 ```
 
 ### ### FP Principle 5: Consider type safety
@@ -668,21 +674,21 @@ def fib(n):
    ```python
    from typing import List
 
-   def my_function(l: List[int], i:int) -> int:  
-      # input types ─────┴──────────┘       |
-      # return type ────────────────────────┘    
+   def my_function(l: List[int], i: int) -> int:  
+      # input types ─────┴───────────┘       │
+      # return type ─────────────────────────┘    
       return l[i]
    
    # This is only a suggestion.  The compiler ignores type hints!
    my_function("abc", 2)   # == "c"
    ```
-    Many newer functional languages have **type inference** were the compiler automatically infers the types for you so you don't have to always put them in the code.
+    Many newer functional languages have **type inference** where the compiler automatically infers the types for you so you don't have to always put them in the code.
    
-- **Type safe language.**  This means you can't do inappropriate things with types, and you always know what type a variable will be.  In this sense Python is not type safe.   A common issue with type safely is Null values:
+- **Type safe language.**  This roughly means you can't do inappropriate things with types. A common type safety issue is Null values:
     ```python
-    def divide(i: int, j:int) -> int:
+    def divide(i: int, j: int) -> int:
         if j == 0: 
-            return None # to signify multiplying by zero
+            return None   # to signify dividing by zero
        else: 
          return i // j
   
@@ -693,7 +699,8 @@ def fib(n):
     Some functional languages have advanced ways to:
     - avoid null types (which we have to remember to handle)
     - avoid raising errors (which we have to remember to handle)
-    - make sure one handles all possible cases (even  rare ones)
+    - make sure one handles all possible cases (even rare ones)
+    - ensure that objects are only used in the way they were intended
 
 ### FP Principle 6: Embrace type theory
 **Holy Trinity of functional programming theory**
@@ -714,16 +721,16 @@ b      # type: B
 #### Function type
 If `A` and `B` are types then `A -> B` is the type of functions with inputs from `A` and outputs from `B`.
 ```python
-def add(a: int, b:int) -> int:  # type: (int x int) -> int
+def add(a: int, b: int) -> int:  # type: (int x int) -> int
     return a + b
 
-def add_curried(a: int):        # type: int -> (int -> int)
+def add_curried(a: int):         # type: int -> (int -> int)
     return lambda b: a + b
 
-add(2, 3)            # 5          type: int
+add(2, 3)            # 5           type: int
 
-add_curried(2)       # function   type: int -> int
-add_curried(2)(3)    # 5          type: int
+add_curried(2)       # function    type: int -> int
+add_curried(2)(3)    # 5           type: int
 ```
 This is an example of **currying**.  In most purely functional languages, functions default to curried form.  This makes it easy to partially apply the function.
 
@@ -751,7 +758,7 @@ type PrimaryColor =  (* A type with only three values *)
 | magenta;;
 
 type Option =  
-| None        (* None value represents an error *)
+| None              (* None value represents an error *)
 | Some of int;;     (* All other values are of the form Some x *)
 
 cyan;;          (* Type: PrimaryColor  *)
@@ -771,15 +778,18 @@ let option_add x y =
   | None -> None
   | Some x_ -> Some (x_ + y);;
 
-other_colors cyan;;       (* (yellow, magenta)     *)
-option_add (Some 5) 4;;   (* Some 9                *)
-option_add None 4;;       (* None                  *)
+other_colors;;            (* Type: PrimaryColor -> PrimaryColor x PrimaryColor *)
+
+option_add;;              (*           Type: Option -> int -> Option  *)             
+option_add (Some 5) 4;;   (* Some 9    Type: Option                   *)
+option_add None 4;;       (* None      Type: Option                   *)
 ```
+
 #### Recursive types
-Recursive types make it easy to construct new types and have them be self referential.  Recursive functions on these objects are very natural to implement.
+Recursive types are self referential types.  They naturally go with recursive functions.
 ```ocaml
 type linked_list =
-  | Nil                (* The end of the list *)
+  | Nil                    (* The end of the list *)
   | Cons of linked_list;;  (* A node in the linked list *)
                            (* "Cons" is short for constructor *)
 type tree =

@@ -209,12 +209,15 @@ Functional programming prefers declaritive code over imperative code.
 
 ```python
 # imperative (steps)
-y = f(x) # step 1
-z = g(y) # step 2
-w = h(z) # step 3
+def my_function(x):
+    y = f(x) # step 1
+    z = g(y) # step 2
+    w = h(z) # step 3
+    return w
 
 # declaritive (function composition)
-w = h(g(f(x)))
+def my_function(x):
+    return h(g(f(x)))
 ```
 
 With object oriented programming, it is possible to write code declaritively, but still preserve the "natural" order of the operations:

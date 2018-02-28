@@ -137,7 +137,7 @@ def third_largest_item(list_of_nums):
 
 # Pure
 def third_largest_item(list_of_nums):
-   new_list = sorted(list_of_nums)  # list_of_nums is not changed
+   new_list = list(sorted(list_of_nums))  # list_of_nums is not changed
    return new_list[-3]
 ```
 
@@ -307,7 +307,7 @@ Copy list and add one to every item.
 
 # imperative (for loop)
 def add_one_to_each_item(old_list):
-    new_list = old_list
+    new_list = []
     for n in old_list:
         new_list.append(n+1)
        
@@ -325,7 +325,7 @@ Divide all even numbers by 2.
 
 # imperative (for loop)
 def divide_by_two_if_even(old_list):
-    new_list = old_list
+    new_list = []
     for n in old_list:
         if n % 2 == 0: # even
             new_list.append(n // 2)
@@ -340,7 +340,7 @@ def add_one_to_each_item(old_list):
 ```python
 """
 Reverse each word in a string.
-e.g. "This is a sentence." -> "sihT si a ecnetnes"
+e.g. "This is a sentence." -> "sihT si a .ecnetnes"
 """
 
 # imperative (for loop)

@@ -129,11 +129,13 @@ Many purely functional programming languages are also object oriented, including
 ```python
 # NOT PURE!!!!
 def third_largest_item(list_of_nums):
-   list_of_nums.sort()  # <-- Side effect: list_of_nums has been is modified
-   global_variable = 5  # <-- Side effect: changing a global variable
-   print("Hello")       # <-- Side effect: input/output operations
+    global global_variable
+    
+    list_of_nums.sort()   # <-- Side effect: list_of_nums has been is modified
+    global_variable += 1  # <-- Side effect: changing a global variable
+    print("Hello")        # <-- Side effect: input/output operations
 
-   return list_of_nums[-3] 
+    return list_of_nums[-3] 
 
 # Pure
 def third_largest_item(list_of_nums):

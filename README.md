@@ -33,10 +33,10 @@ We will focus on **the functional programming paradigm** (i.e. patterns/principl
  1. Use functions as values (which can be passed to other functions)
  2. Write pure functions (with no side effects)
  3. Program declaratively, not imperatively
-   - Composition not steps
-   - Avoid  `for`  and  `while`  loops
-   - Inline  `if then else`  (also  `cases`)
-   - Use pattern matching (deconstruction)
+     1. Composition not steps
+     2. Avoid  `for`  and  `while`  loops
+     3. Inline  `if then else`  (also  `cases`)
+     4. Use pattern matching (deconstruction)
  4. Use immutable types
  5. Consider type safety
  6. Embrace type theory
@@ -651,7 +651,7 @@ def fib(n):
         return fib(n - 1) + fib(n - 2)
 ```
 
-### ### FP Principle 5: Consider type safety
+### FP Principle 5: Consider type safety
 - **Strongly typed language.** Every object has a fixed type.  Python is strongly typed, as are C++, Java, and most functional languages.
     ```python
     3                  # type: int

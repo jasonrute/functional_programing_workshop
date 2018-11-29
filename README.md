@@ -27,7 +27,8 @@ In the 1920s and 1930s there were two  theories of computation.
   1. A **category of programming languages** (see above)
   2. A **paradigm of programming** which also applies to imperative languages.
 
-We will focus on **the functional programming paradigm** (i.e. patterns/principles) with examples in Python 3.  (However, I am secretly teaching you how to program in a purely functional language like OCaml.)
+We will focus on **the functional programming paradigm** (i.e. patterns/principles) with examples in Python 3.  (However, I am secretly teaching you how to program in a purely functional language like Scala.)
+
 ### FP principles at a glance
 
  1. Use functions as values (which can be passed to other functions)
@@ -41,7 +42,7 @@ We will focus on **the functional programming paradigm** (i.e. patterns/principl
  5. Consider type safety
  6. Embrace type theory
 
-***Warning** Python is not a purely functional language and following this advice exactly may cause you to fail your code reviews.  Use common sense.*
+***Warning** Python is not a purely functional language and following this advice exactly may cause you to write bad Python code.  Use common sense.*
 
 ### Why functional programming?
 
@@ -87,8 +88,12 @@ plus_two(0)  # == plus_one(plus_one(0)) == 2
 
 ### Map functions
 ```python
+l    # list object
 s    # pd.Series object
 df   # pd.DataFrame object
+
+# apply function to every element of the list (rare to see list.map in Python)
+l.map(lambda x: x + 1)      # a copy of l with every item incremented
 
 # apply function to every series element
 s.map(lambda x: x * x)      # a copy of s with every item squared
@@ -139,8 +144,8 @@ def third_largest_item(list_of_nums):
 
 # Pure
 def third_largest_item(list_of_nums):
-   new_list = list(sorted(list_of_nums))  # list_of_nums is not changed
-   return new_list[-3]
+    new_list = list(sorted(list_of_nums))  # list_of_nums is not changed
+    return new_list[-3]
 ```
 
 Pure functions perform the same way every time. 
@@ -152,9 +157,11 @@ Pure functions perform the same way every time.
   - **Imperative:** 
     - Focused on **steps** (the "how").  
     - Closer to the actual machine steps.
+    - Think "recipes"
   - **Declarative:** 
     - Focused on **results** (the "what").  
     - Closer to the desired results.
+    - Think "formulas"
 
 ```python
 """
@@ -212,9 +219,9 @@ Functional programming prefers declaritive code over imperative code.
 ```python
 # imperative (steps)
 def my_function(x):
-    y = f(x) # step 1
-    z = g(y) # step 2
-    w = h(z) # step 3
+    x = f(x) # step 1
+    x = g(x) # step 2
+    x = h(x) # step 3
     return w
 
 # declaritive (function composition)
@@ -226,12 +233,12 @@ With object oriented programming, it is possible to write code declaritively, bu
 ```python
 # imperative (steps)
 x = "This is a string"
-y = x.lower()           # make lower case
-z = y.split()           # split into a list of words
-w = w.index("is")       # find the index of the first occurrence of the word "is"
+x = x.lower()           # make lower case
+x = x.split()           # split into a list of words
+x = x.index("is")       # find the index of the first occurrence of the word "is"
 
 # declarative (function composition)
-w = ("This is a string"
+x = ("This is a string"
         .lower()        # make lower case
         .split()        # split into a list of words
         .index("is"))   # find the index of the first occurrence of the word "is"
@@ -258,7 +265,8 @@ def plot_number_of_rows_per_week(df):
        .plot())                          # plot
 ```
 
-### Declaritive principle: Avoid `for` and `while` loops
+### Declaritive principle: Avoid `for` and `while` loops (but "`for` comprehensions" are ok)
+
 #### Recursion
 Many loop constructs can be replaced with recursion.  This is especially true of algorithms for trees.
 ```python
@@ -300,6 +308,7 @@ def contains(tree, value):
               or contains(tree.left, val) 
               or contains(tree.right, val))
 ```
+
 #### List comprehension
 Simple loops (especially those which construct lists or strings) can be accomplished via list comprehension
 ```python
@@ -319,6 +328,8 @@ def add_one_to_each_item(old_list):
 def add_one_to_each_item(old_list):
     return [n + 1 for n in old_list] # list comprehension
 ```
+
+Note: `[n + 1 for n in old_list]` is equivalent to `old_list.map(lambda n: n + 1)`, but more common in Python.
 
 ```python
 """
@@ -376,6 +387,13 @@ tuple(n for n in range(4) if n != 2)    # == (0, 1, 4)
 # iterator comprehension
 (n for n in range(4) if n != 2)         # an iterator (advanced concept)
 ```
+
+Can also have nested loops:
+```python
+# list comprehension with multiple loops
+[a + b for a in "AB" for b in "YZ"]   # == ['AY', 'AZ', 'BY', 'BZ']
+```
+
 #### Reduce (aggregation) operations
 ```python
 sum(list_of_nums)              # sum numbers
@@ -488,7 +506,7 @@ Computer science is moving to massively parallel programming.  Writing declarati
 ### MapReduce
 Google's MapReduce is an example of how functional/declarative programming has influenced data science.  Suppose one wants to count the instances of every word on the Internet.
 - **Map** (In parallel for each website) Count the words on a website, creating a dictionary of word counts.
-- **Group** (In parallel for each website) For each word in the dictionary, send that word count to a process based on that word.
+- **Group** (In parallel for each website) For each word in the dictionary, send that word count to a process which handles only that word.
 - **Reduce** (In parallel for each word) Sum all the counts for that word.
 
 Google noticed many of their data gathering tasks followed this format, and therefore they could reduce the task to a simple function:
